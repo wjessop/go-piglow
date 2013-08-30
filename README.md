@@ -51,15 +51,6 @@ See examples/example.go for a more comprehensive use.
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-## TODO
-
-- auto-detect xbox controllers being added/removed
-- Handle more than one controller type
-- display_xbox_status(libusb_device_handle *handle) crashes when the xbox controller is not connected
-- ps1 controller
-- Maybe use the async API of libusbx
-- Signal handling is kind of odd
-
 ## Author
 
 * Will Jessop, @will_j, will@willj.net
