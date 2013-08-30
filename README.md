@@ -10,7 +10,7 @@ See the [Piglow github page](https://github.com/pimoroni/piglow) for details on 
 package main
 
 import (
-	"piglow"
+	"github.com/wjessop/go-piglow"
 	"log"
 )
 
