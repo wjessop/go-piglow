@@ -43,7 +43,7 @@ func NewPiglow() (piglow *Piglow, err error) {
 }
 
 func (p *Piglow) Apply() (err error) {
-	err = i2cbus.WriteByteBlock(i2c_addr, CMD_SET_PWM_VALUES, p.values[0:17])
+	err = i2cbus.WriteByteBlock(i2c_addr, CMD_SET_PWM_VALUES, p.values[0:18])
 	if err != nil {
 		return
 	}
