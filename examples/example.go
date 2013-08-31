@@ -16,6 +16,73 @@ func main() {
 		log.Fatal("Couldn't create a Piglow: ", err)
 	}
 
+	// Fade in white
+	for i := 0; i <= 50; i++ {
+		p.SetWhite(uint8(i))
+		err = p.Apply()
+		if err != nil { // Apply the changes
+			log.Fatal("Couldn't apply changes: ", err)
+		}
+		time.Sleep(5e7)
+	}
+
+	// Fade in blue, out white
+	for i := 0; i <= 50; i++ {
+		p.SetBlue(uint8(i))
+		p.SetWhite(uint8(50 - i))
+		err = p.Apply()
+		if err != nil { // Apply the changes
+			log.Fatal("Couldn't apply changes: ", err)
+		}
+		time.Sleep(5e7)
+	}
+
+	// Fade in green, out blue
+	for i := 0; i <= 50; i++ {
+		p.SetGreen(uint8(i))
+		p.SetBlue(uint8(50 - i))
+		err = p.Apply()
+		if err != nil { // Apply the changes
+			log.Fatal("Couldn't apply changes: ", err)
+		}
+		time.Sleep(5e7)
+	}
+
+	// Fade in yellow, out green
+	for i := 0; i <= 50; i++ {
+		p.SetYellow(uint8(i))
+		p.SetGreen(uint8(50 - i))
+		err = p.Apply()
+		if err != nil { // Apply the changes
+			log.Fatal("Couldn't apply changes: ", err)
+		}
+		time.Sleep(5e7)
+	}
+
+	// Fade in orange, out yellow
+	for i := 0; i <= 50; i++ {
+		p.SetOrange(uint8(i))
+		p.SetYellow(uint8(50 - i))
+		err = p.Apply()
+		if err != nil { // Apply the changes
+			log.Fatal("Couldn't apply changes: ", err)
+		}
+		time.Sleep(5e7)
+	}
+
+	// Fade in red, out orange
+	for i := 0; i <= 50; i++ {
+		p.SetRed(uint8(i))
+		p.SetOrange(uint8(50 - i))
+		err = p.Apply()
+		if err != nil { // Apply the changes
+			log.Fatal("Couldn't apply changes: ", err)
+		}
+		time.Sleep(5e7)
+	}
+
+	p.SetAll(0) // Turn them all off
+
 	p.SetLED(0, 255) // Set LED 0 to 255 (max brightness)
 	p.SetLED(1, 128) // Set LED 1 to half brightness
 	err = p.Apply()

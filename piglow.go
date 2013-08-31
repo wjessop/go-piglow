@@ -16,6 +16,13 @@ const (
 	CMD_UPDATE         byte = 0x16
 )
 
+var white_leds = [3]int8{12, 9, 10}
+var blue_leds = [3]int8{14, 4, 11}
+var green_leds = [3]int8{3, 5, 13}
+var yellow_leds = [3]int8{2, 8, 15}
+var orange_leds = [3]int8{1, 7, 16}
+var red_leds = [3]int8{0, 6, 17}
+
 type Piglow struct {
 	values [18]byte
 }
@@ -68,5 +75,47 @@ func (p *Piglow) SetLED(n int8, brightness uint8) {
 func (p *Piglow) SetAll(brightness uint8) {
 	for i := 0; i < 18; i++ {
 		p.values[i] = brightness
+	}
+}
+
+/*
+
+	Set colour rings to the given brightness
+
+*/
+
+func (p *Piglow) SetWhite(brightness uint8) {
+	for i := 0; i < 3; i++ {
+		p.values[white_leds[i]] = brightness
+	}
+}
+
+func (p *Piglow) SetBlue(brightness uint8) {
+	for i := 0; i < 3; i++ {
+		p.values[blue_leds[i]] = brightness
+	}
+}
+
+func (p *Piglow) SetGreen(brightness uint8) {
+	for i := 0; i < 3; i++ {
+		p.values[green_leds[i]] = brightness
+	}
+}
+
+func (p *Piglow) SetYellow(brightness uint8) {
+	for i := 0; i < 3; i++ {
+		p.values[yellow_leds[i]] = brightness
+	}
+}
+
+func (p *Piglow) SetOrange(brightness uint8) {
+	for i := 0; i < 3; i++ {
+		p.values[orange_leds[i]] = brightness
+	}
+}
+
+func (p *Piglow) SetRed(brightness uint8) {
+	for i := 0; i < 3; i++ {
+		p.values[red_leds[i]] = brightness
 	}
 }
