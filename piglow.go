@@ -2,6 +2,7 @@ package piglow
 
 import (
 	"bitbucket.org/gmcbay/i2c"
+	"math"
 )
 
 var i2cbus *i2c.I2CBus
@@ -22,6 +23,10 @@ var green_leds = [3]int8{3, 5, 13}
 var yellow_leds = [3]int8{2, 8, 15}
 var orange_leds = [3]int8{1, 7, 16}
 var red_leds = [3]int8{0, 6, 17}
+
+var tentacle_0_leds = [6]int8{12, 14, 3, 2, 1, 0}
+var tentacle_1_leds = [6]int8{9, 4, 5, 8, 7, 6}
+var tentacle_2_leds = [6]int8{10, 11, 13, 15, 16, 17}
 
 type Piglow struct {
 	values [18]byte
@@ -117,5 +122,73 @@ func (p *Piglow) SetOrange(brightness uint8) {
 func (p *Piglow) SetRed(brightness uint8) {
 	for i := 0; i < 3; i++ {
 		p.values[red_leds[i]] = brightness
+	}
+}
+
+// Set all LEDs along the whole of a tentacle to brightness
+func (p *Piglow) SetTentacle(tentacle int, brightness uint8) {
+	leds := selectTentacle(tentacle)
+	for i := 0; i < 6; i++ {
+		p.SetLED(leds[i], brightness)
+	}
+}
+
+// Display a value on a tentacle.
+// tentacle: 0-2, the tentacle to display the value
+// val: the value to display
+// max_val: the range in which to display the value. If val equals, or goes above this all LEDs will be lit.
+// brightness: What the max brightness should be for fully list LEDs
+// direction: start the display from the centre out, or the outside in
+func (p *Piglow) DisplayValueOnTentacle(tentacle int, val float64, max_val float64, brightness uint8, direction bool) {
+	leds := selectTentacle(tentacle)
+
+	num_leds := len(leds)
+	values_per_led := max_val / float64(num_leds)
+	proportion_lit := val / values_per_led
+	full, partial := math.Modf(proportion_lit)
+	if int(full) >= len(leds) {
+		p.SetTentacle(tentacle, brightness)
+		return
+	}
+
+	p.zeroLEDs(leds[0:len(leds)])
+
+	for i := 0; i < int(full); i++ {
+		if direction {
+			p.SetLED(leds[i], brightness)
+		} else {
+			p.SetLED(leds[len(leds)-i-1], brightness)
+		}
+	}
+
+	if partial == 0 {
+		return
+	}
+
+	partial_brightness := math.Floor((float64(brightness) * partial) + 0.5)
+	if direction {
+		p.SetLED(leds[int(full)], uint8(partial_brightness))
+	} else {
+		p.SetLED(leds[len(leds)-int(full)-1], uint8(partial_brightness))
+	}
+
+	return
+}
+
+func selectTentacle(tentacle int) (leds [6]int8) {
+	switch {
+	case tentacle == 0:
+		leds = tentacle_0_leds
+	case tentacle == 1:
+		leds = tentacle_1_leds
+	case tentacle == 2:
+		leds = tentacle_2_leds
+	}
+	return
+}
+
+func (p *Piglow) zeroLEDs(leds []int8) {
+	for i := 0; i < len(leds); i++ {
+		p.SetLED(leds[i], 0)
 	}
 }
