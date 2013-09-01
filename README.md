@@ -35,7 +35,7 @@ Cross compile for the Raspberry pi with:
 
 ````GOOS=linux GOARM=6 GOARCH=arm go build````
 
-See examples/*.go for a more comprehensive use.
+See examples/example.go for a list of functions you can use. The other files in examples/* are more complex examples of how to use the lib.
 
 ## Notes
 
