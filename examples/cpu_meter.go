@@ -12,6 +12,8 @@ import (
 	"fmt"
 	"github.com/wjessop/go-piglow"
 	"io/ioutil"
+	"os"
+	"os/signal"
 	"strconv"
 	"strings"
 	"time"
@@ -28,6 +30,19 @@ var load2_leds = [6]int8{9, 4, 5, 8, 7, 6}
 var load3_leds = [6]int8{10, 11, 13, 15, 16, 17}
 
 func main() {
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	go func() {
+		for _ = range c {
+			p.SetAll(0)
+			err := p.Apply()
+			if err != nil {
+				panic(err)
+			}
+			os.Exit(0)
+		}
+	}()
+
 	var err error
 
 	p, err = piglow.NewPiglow()
