@@ -11,7 +11,7 @@ func main() {
 	// Create a new Piglow
 	p, err = piglow.NewPiglow()
 	if err != nil {
-		log.Fatal("Couldn't create a Piglow: ", err)
+		panic(err)
 	}
 
 	// Set LED to brightness 10
